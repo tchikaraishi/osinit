@@ -1,2 +1,2 @@
 # osinit
-Change SSH settings and add a non-root user for VPS
+Change SSH settings and create a non-root user for ConoHa CentOS 7.1.
