@@ -2,12 +2,14 @@
 #
 # ConoHaのCentOS 7.1をGUI環境にするシェルスクリプト
 #
+
 if [ `id -u` -ne 0 ]
 then
 	echo "Re-run this program as the super user." >&2
 	exit 1
 fi
 
+# GNOME Desktop
 GNOME_DESKTOP="
 @base
 @core
@@ -24,6 +26,7 @@ GNOME_DESKTOP="
 @x11
 kexec-tools"
 
+# サーバー(GUI使用)
 SERVER_WITH_GUI="
 @base
 @core
@@ -40,6 +43,7 @@ SERVER_WITH_GUI="
 @x11
 kexec-tools"
 
+# 開発およびクリエイティブワークステーション
 DEVELOPMENT_AND_CREATIVE_WORKSTATION="
 @base
 @core

@@ -2,6 +2,7 @@
 #
 # ConoHaのCentOS 7.1の初期設定をするシェルスクリプト
 #
+
 if [ `id -u` -ne 0 ]
 then
 	echo "Re-run this program as the super user." >&2
