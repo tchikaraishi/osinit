@@ -18,7 +18,9 @@ sed -e "
 	s/^PasswordAuthentication yes$/PasswordAuthentication no/
 	77s/^PasswordAuthentication no$/#PasswordAuthentication yes/
 " -i /etc/ssh/sshd_config
-sed -e "s/22/10022/" -i /usr/lib/firewalld/services/ssh.xml
+sed -e "
+	s/22/10022/
+" -i /usr/lib/firewalld/services/ssh.xml
 
 # ----------------------------------------------------------------------
 # 2. ユーザーの作成
@@ -28,8 +30,8 @@ useradd -g admin -G wheel admin
 chfn -f Administrator admin
 mount /dev/sr1 /mnt
 sed -e '
-s/^{"admin_pass": "//
-s/".*$//
+	s/^{"admin_pass": "//
+	s/".*$//
 ' /mnt/openstack/latest/meta_data.json | passwd --stdin admin
 visudo 2> /dev/null <<EOT
 :/^# %wheel\s*ALL=(ALL)\s*ALL/s/^#\s*//
