@@ -12,12 +12,12 @@ fi
 # ----------------------------------------------------------------------
 # 1. SSHの設定
 # ----------------------------------------------------------------------
-sed -e "{
+sed -e "
 	s/^#Port 22$/Port 10022/
 	s/^PermitRootLogin yes$/PermitRootLogin no/
 	s/^PasswordAuthentication yes$/PasswordAuthentication no/
 	77s/^PasswordAuthentication no$/#PasswordAuthentication yes/
-}" -i /etc/ssh/sshd_config
+" -i /etc/ssh/sshd_config
 sed -e "s/22/10022/" -i /usr/lib/firewalld/services/ssh.xml
 
 # ----------------------------------------------------------------------
@@ -26,7 +26,11 @@ sed -e "s/22/10022/" -i /usr/lib/firewalld/services/ssh.xml
 groupadd admin
 useradd -g admin -G wheel admin
 chfn -f Administrator admin
-passwd admin
+mount /dev/sr1 /mnt
+sed -e '
+s/^{"admin_pass": "//
+s/".*$//
+' /mnt/openstack/latest/meta_data.json | passwd --stdin admin
 visudo 2> /dev/null <<EOT
 :/^# %wheel\s*ALL=(ALL)\s*ALL/s/^#\s*//
 :wq
@@ -35,12 +39,19 @@ cp -r ~/.ssh ~admin
 chown -R admin:admin ~admin/.ssh
 
 # ----------------------------------------------------------------------
-# 3. ソフトウェアの更新
+# 3. 下記メールの抑止
+# Cron <root@xxx-xxx-xxx-xxx> /usr/lib64/sa/sa1 1 1
+# Cannot open /var/log/sa/sa08: No such file or directory
+# ----------------------------------------------------------------------
+mkdir /var/log/sa
+
+# ----------------------------------------------------------------------
+# 4. ソフトウェアの更新
 # ----------------------------------------------------------------------
 yum -y update
 
 # ----------------------------------------------------------------------
-# 4. システムの再起動
+# 5. システムの再起動
 # ----------------------------------------------------------------------
 shutdown -r now
 

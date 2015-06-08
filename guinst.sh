@@ -83,7 +83,7 @@ localectl set-locale LANG=ja_JP.UTF8
 yum -y install $GNOME_DESKTOP
 
 # ----------------------------------------------------------------------
-# 3. 起動モードの設定
+# 3. デフォルトターゲットの設定
 # ----------------------------------------------------------------------
 systemctl set-default graphical.target
 
