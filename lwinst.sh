@@ -10,7 +10,7 @@ then
 fi
 
 # レポートの宛先 (例: admin@example.com)
-ADMIN_CONTACT=${1:-/dev/null}
+ADMIN_CONTACT=$1
 
 # ----------------------------------------------------------------------
 # 1. Logwatchのインストール
@@ -20,10 +20,12 @@ yum -y install logwatch
 # ----------------------------------------------------------------------
 # 2. メール転送の設定
 # ----------------------------------------------------------------------
-cat >> /etc/aliases <<EOT
-root:		admin
-admin:		$ADMIN_CONTACT
+if [ -n "$ADMIN_CONTACT" ]
+then
+	cat >> /etc/aliases <<EOT
+root:		$ADMIN_CONTACT
 EOT
-newaliases
+	newaliases
+fi
 
 exit 0
